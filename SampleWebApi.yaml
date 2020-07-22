@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallpaperdepl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: DockerWebApi
+  template:
+    metadata:
+      labels:
+        app: DockerWebApi
+    spec:
+      containers:
+      - name: dockerwebapi
+        image: registrywebapi.azurecr.io/containerrepos:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: wepapisn 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dockerwebapi
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: DockerWebApi
